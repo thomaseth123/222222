@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Birthday Surprise | For Someone Special</title>
+    <title> Birthday Surprise | For Aamna</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,900&display=swap"
         rel="stylesheet">
@@ -94,9 +94,131 @@
         .step-content { display: none; min-height: 120px; align-items: center; justify-content: center; animation: fadeInScale 0.8s forwards; }
         .step-content.active { display: flex; flex-direction: column; }
 
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
         /* --- Celebration Page --- */
         #celebration-page { background: #000; transition: background 2s ease; }
         #celebration-page.bright { background: radial-gradient(circle at center, #2a0a0e 0%, #0a0a0b 100%); }
 
         .fairy-lights-container { position: absolute; top: 0; width: 100%; height: 150px; pointer-events: none; opacity: 0; transition: opacity 2s ease; z-index: 5; }
-        .wire-svg { position: absolute; top: 0; left:
+        .wire-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; fill: none; stroke: #222; stroke-width: 2; }
+
+        /* --- Curtain Page --- */
+        .curtain-panel {
+            position: absolute; top: 0; width: 51%; height: 100%;
+            background: repeating-linear-gradient(to right, var(--royal-red), #4a0000 10%);
+            z-index: 20; transition: transform 2.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+        .curtain-left { left: 0; border-right: 4px solid var(--gold); }
+        .curtain-right { right: 0; border-left: 4px solid var(--gold); }
+        .open .curtain-left { transform: translateX(-100%) skewY(-5deg); }
+        .open .curtain-right { transform: translateX(100%) skewY(5deg); }
+
+        /* --- Gallery Section --- */
+        #gallery-page { background: #050505; overflow-y: auto; display: block; padding: 100px 20px; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
+        .memory-card { height: 400px; border-radius: 20px; overflow: hidden; background: var(--glass); position: relative; border: 1px solid var(--glass-border); }
+        .memory-image { width: 100%; height: 100%; object-fit: cover; }
+    </style>
+</head>
+
+<body>
+
+    <section id="hero-page" class="page active">
+        <div id="particle-container" style="position: absolute; width: 100%; height: 100%; top:0; left:0; pointer-events: none;"></div>
+        <h1 class="hero-title">Happy Birthday, Aamna</h1>
+        <p class="hero-sub" style="margin-top: 15px; letter-spacing: 4px; color: rgba(255,255,255,0.6);">A Cinematic Journey Created Just For You</p>
+        <button class="btn-neon" style="margin-top: 40px;" onclick="transitionTo('message-slider-page')">Open Your Gift</button>
+    </section>
+
+    <section id="message-slider-page" class="page">
+        <div id="slider-particles" style="position: absolute; width: 100%; height: 100%; top:0; left:0; pointer-events: none;"></div>
+        <div class="slider-card">
+            <div id="step-1" class="step-content active">
+                <h2 style="font-family: 'Playfair Display'; font-size: 2rem; margin-bottom: 30px;">It's Your Special Day</h2>
+                <button class="btn-neon" onclick="nextStep(2)">Next</button>
+            </div>
+            <div id="step-2" class="step-content">
+                <h2 style="font-family: 'Playfair Display'; font-size: 2rem; margin-bottom: 30px;">Ek nazar yahan bhi, Aamna ji</h2>
+                <button class="btn-neon" onclick="nextStep(3)">Next</button>
+            </div>
+            <div id="step-3" class="step-content">
+                <h2 style="font-family: 'Playfair Display'; font-size: 2rem; margin-bottom: 30px;">Ready for your surprise?</h2>
+                <button class="btn-neon" onclick="finishSlider()">Let's Go</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="celebration-page" class="page">
+        <div class="fairy-lights-container" id="fairy-lights-container">
+            <svg class="wire-svg" viewBox="0 0 1000 150">
+                <path id="wire-path" d="M0,20 Q100,60 200,20 T400,20 T600,20 T800,20 T1000,20" />
+            </svg>
+        </div>
+        <h2 id="celeb-hint" style="font-size: 1.5rem; margin-bottom: 30px; letter-spacing: 2px;">The Stage is Set...</h2>
+        <button id="celeb-master-btn" class="btn-neon" onclick="celebFlow()">💡 Turn On Lights</button>
+    </section>
+
+    <section id="curtain-page" class="page" style="padding: 0;">
+        <div style="position: relative; width: 100vw; height: 100vh; overflow: hidden;" id="stage">
+            <div class="curtain-panel curtain-left"></div>
+            <div class="curtain-panel curtain-right"></div>
+            <div style="height: 100%; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, #1a1a1a, #000);">
+                <div style="background: rgba(255,255,255,0.05); padding: 40px; border-radius: 30px; max-width: 600px; border: 1px solid rgba(255,255,255,0.1);" id="message-card">
+                    <h2 style="font-family: 'Dancing Script'; font-size: 3rem; color: var(--accent); margin-bottom: 20px;">Dearest Aamna,</h2>
+                    <p style="line-height: 1.8; color: rgba(255,255,255,0.8);">
+                        Aaj sirf ek tarikh nahi hai, balki us roshni ka jashn hai jo aap meri zindagi mein lati hain. 
+                        Aapke saath har pal ek khoobsurat film ke scene jaisa hai. 
+                        Umeed hai ye saal aapke liye dher saari khushiyan aur magic lekar aaye.
+                    </p>
+                    <button class="btn-neon" style="margin-top: 30px;" onclick="transitionTo('gallery-page')">Our Memories</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery-page" class="page">
+        <h2 style="font-family: 'Dancing Script'; font-size: 3.5rem; color: var(--accent); margin-bottom: 50px;">Moments in Time</h2>
+        <div class="gallery-grid">
+            <div class="memory-card"><img src="https://via.placeholder.com/400x600?text=Aamna+Memory+1" class="memory-image"></div>
+            <div class="memory-card"><img src="https://via.placeholder.com/400x600?text=Aamna+Memory+2" class="memory-image"></div>
+            <div class="memory-card"><img src="https://via.placeholder.com/400x600?text=Aamna+Memory+3" class="memory-image"></div>
+        </div>
+        <button class="btn-neon" style="margin: 60px 0;" onclick="location.reload()">Replay Magic</button>
+    </section>
+
+    <audio id="birthday-audio" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        function transitionTo(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            if(pageId === 'curtain-page') {
+                setTimeout(() => document.getElementById('stage').classList.add('open'), 1000);
+            }
+        }
+
+        function nextStep(step) {
+            document.querySelectorAll('.step-content').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step-${step}`).classList.add('active');
+        }
+
+        function finishSlider() { transitionTo('celebration-page'); }
+
+        let celebStep = 1;
+        function celebFlow() {
+            const btn = document.getElementById('celeb-master-btn');
+            const hint = document.getElementById('celeb-hint');
+            if (celebStep === 1) {
+                document.getElementById('celebration-page').classList.add('bright');
+                document.getElementById('fairy-lights-container').style.opacity = '1';
+                hint.innerText = "Music makes it better..."; 
+                btn.innerText = "🎵 Play Music"; 
+                celebStep = 2;
+            } else if (celebStep === 2) {
+                document.getElementById('
